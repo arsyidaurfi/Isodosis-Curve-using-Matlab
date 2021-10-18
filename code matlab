@@ -1,0 +1,45 @@
+#Import data dose to Matlab
+#Input variable crossline and dose to dose data, Depth and PDD to PSS data
+
+
+#Interpolation of dose and PDD data, in a range according to field area
+Crossline=table2array(dosedata(:,1));
+Dose=table2array(dosedata(:,2));
+InterpCrossline=-10:0.25:10;
+InterpDose=interp1(Crossline,Dose,InterpCrossline,'linear');
+Depth=table2array(dataPDD(:,1));
+PDD=table2array(dataPDD(:,2));
+InterpDepth=0:0.25:30;
+InterpPDD=interp1(Depth,PDD,InterpDepth,'linear');
+data=[InterpJarak;InterpDosis];
+xlswrite('data interpolation of dosis.xlsx',data);
+data2=[InterpDepth;InterpPDD];
+xlswrite('data interpolation of PDD.xlsx',data2);
+
+#Min-Max Transformation of InterpDose data
+#Proyeksi xi to xn
+#Import data transformation and Input Crossline and PDD to Workspace
+
+#Interpolation Dose data xi
+Crossline=table2array(datatrans(:,1));
+Dose=table2array(datatrans(:,2));
+InterpCrossline=table2array(xi);
+InterpDose=interp1(Crossline,Dose,InterpCrossline,'linear');
+xlswrite('data interpolasi xi 10 x 10 (6 MV).xlsx',InterpDose);
+
+#Counting D 
+#Isodosis Curve
+[x10]=-10:0.25:10;
+[y10]=0:0.25:30;
+[X10,Y10]=meshgrid(x10,y10);
+[Z10]=table2array(D10);
+[c,h]=contour(X10,Y10,Z10);
+%clabel(c10,h10,'manual');
+xlabel('Crossline (cm)') %axis name horizontal
+ylabel ('Depth(cm)') %axis namevertikal
+title('Isodosis Curve 10x10 cm')%title of curve
+axis([-10 10 0 30]);
+colormap(jet);
+colorbar;
+grid on;
+
